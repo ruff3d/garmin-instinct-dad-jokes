@@ -9,7 +9,7 @@ A Monkey C Connect IQ **watch app** that gets random English dad jokes from [ica
 - Shows the smug-grin sticker ([`resources/drawables/smile.png`](resources/drawables/smile.png)) in the Instinct's upper-right subscreen circle, but only once **START** reveals the punchline. The source artwork is reduced to 54px and the panel's 1-bit black/white palette at build time.
 - Wraps each text row to the display contour and around the subscreen circle. Use **UP/DOWN** to scroll pages.
 - **START** progresses through setup → punchline → next joke.
-- Revealing a punchline plays a short two-note "ta-da" beep (when watch tones are supported and enabled).
+- Revealing a punchline plays a short four-note "pa-ram-pam-pam" beep (when watch tones are supported and enabled). Loudness follows the watch's sound setting.
 - Saves the last good joke across app sessions. On request failure, the saved joke remains visible. With no saved joke, a connection/retry message appears.
 - Requires no API key or companion app of your own. Requests send no location, activity, or health data. The joke service receives ordinary HTTP request metadata.
 
@@ -63,7 +63,7 @@ For manual testing:
 
 1. Open the app and confirm the setup appears without overlapping the upper-right circle.
 2. Press **UP/DOWN** and confirm long text scrolls through every page.
-3. Press **START** to show the punchline and hear the two-note beep, then **START** again to download the next joke without another beep.
+3. Press **START** to show the punchline and hear the four-note beep, then **START** again to download the next joke without another beep.
 4. Disable the simulator's phone connection, request another joke, and confirm the saved joke remains.
 5. Re-enable the connection, request again, and confirm recovery.
 6. Restart the app and confirm it restores the saved joke.

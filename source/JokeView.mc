@@ -177,9 +177,12 @@ class JokeDelegate extends WatchUi.BehaviorDelegate {
             (Application.getApp() as DadJokesApp).requestJoke();
         } else if (!wasRevealed && _state.revealed
                    && Attention has :playTone && Attention has :ToneProfile) {
+            // ponytail: short native tones; volume follows the watch setting.
             Attention.playTone({:toneProfile => [
-                new Attention.ToneProfile(2500, 120),
-                new Attention.ToneProfile(3500, 300)
+                new Attention.ToneProfile(1800, 85),
+                new Attention.ToneProfile(2400, 145),
+                new Attention.ToneProfile(2100, 85),
+                new Attention.ToneProfile(1800, 175)
             ]});
         }
         _view.resetScroll();
