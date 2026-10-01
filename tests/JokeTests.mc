@@ -55,14 +55,6 @@ function wrapsAtWordsAndSplitsLongWords(logger as Test.Logger) as Boolean {
 }
 
 (:test)
-function paginationDoesNotLoseLastLine(logger as Test.Logger) as Boolean {
-    Test.assertEqual(JokeText.pageCount(5, 2), 3);
-    Test.assertEqual(JokeText.pageCount(4, 2), 2);
-    Test.assertEqual(JokeText.pageCount(1, 1), 1);
-    return true;
-}
-
-(:test)
 function keepsAWordThatExactlyFits(logger as Test.Logger) as Boolean {
     var font = new TestFont();
     var lines = JokeText.wrap("Hi there all", 8, font.method(:measure));
@@ -82,6 +74,29 @@ function wrapsToEachScreenRowWidth(logger as Test.Logger) as Boolean {
     Test.assertEqual(lines[1], "ef ghij");
     Test.assertEqual(lines[2], "klmn");
     Test.assertEqual(lines[3], "op");
+    return true;
+}
+
+(:test)
+function rotatesRowWidthsByScrollOffset(logger as Test.Logger) as Boolean {
+    var widths = [10, 20, 30] as Array<Number>;
+    // Arrays compare by reference in Monkey C, so check element by element.
+    var cases = {
+        0 => [10, 20, 30] as Array<Number>,
+        1 => [30, 10, 20] as Array<Number>,
+        2 => [20, 30, 10] as Array<Number>,
+        3 => [10, 20, 30] as Array<Number>
+    };
+    var offsets = cases.keys();
+    for (var i = 0; i < offsets.size(); i += 1) {
+        var offset = offsets[i] as Number;
+        var expected = cases.get(offset) as Array<Number>;
+        var actual = JokeText.rotateWidths(widths, offset);
+        Test.assertEqual(actual.size(), expected.size());
+        for (var k = 0; k < expected.size(); k += 1) {
+            Test.assertEqual(actual[k], expected[k]);
+        }
+    }
     return true;
 }
 

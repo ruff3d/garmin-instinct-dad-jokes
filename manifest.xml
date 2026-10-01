@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
-    <iq:application id="a1bb87cfb495456ba5d10821731e89cb" type="watch-app"
-        name="@Strings.AppName" entry="DadJokesApp" minApiLevel="3.2.0"
-        launcherIcon="@Drawables.LauncherIcon" version="1.0.0">
+    <iq:application id="a1bb87cfb495456ba5d10821731e89cb" type="watch-app" name="@Strings.AppName" entry="DadJokesApp" minApiLevel="3.2.0" launcherIcon="@Drawables.LauncherIcon" version="1.0.0">
         <iq:products>
+            <iq:product id="instinct3amoled45mm"/>
             <iq:product id="instinct3solar45mm"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Communications"/>
         </iq:permissions>
-        <iq:languages><iq:language>eng</iq:language></iq:languages>
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
         <iq:barrels/>
     </iq:application>
 </iq:manifest>

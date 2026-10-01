@@ -72,7 +72,14 @@ module JokeText {
         return -1;
     }
 
-    function pageCount(lineCount as Number, linesPerPage as Number) as Number {
-        return ((lineCount + linesPerPage - 1) / linesPerPage).toNumber();
+    // Line i renders on screen row (i - offset), so each line must be wrapped
+    // to that row's width or a full-width line could slide under the subscreen.
+    function rotateWidths(widths as Array<Number>, offset as Number) as Array<Number> {
+        var n = widths.size();
+        var rotated = [] as Array<Number>;
+        for (var i = 0; i < n; i += 1) {
+            rotated.add(widths[((i - offset) % n + n) % n]);
+        }
+        return rotated;
     }
 }

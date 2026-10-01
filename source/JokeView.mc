@@ -11,8 +11,9 @@ class JokeView extends WatchUi.View {
     private var _layoutWidth as Number = 0;
     private var _layoutHeight as Number = 0;
     private var _rowLefts as Array<Number> = [];
-    private var _pages as Number = 1;
-    private var _page as Number = 0;
+    private var _rows as Number = 1;
+    private var _offset as Number = 0;
+    private var _wrapOffset as Number = -1;
     private var _dc as Graphics.Dc?;
 
     function initialize(state as JokeState) {
@@ -20,18 +21,21 @@ class JokeView extends WatchUi.View {
         _state = state;
     }
 
+    // ponytail: one line per press. Smooth pixel animation would need an
+    // off-screen buffer the Instinct's graphics budget does not justify.
     function scroll(delta as Number) as Void {
-        _page += delta;
-        if (_page < 0) { _page = 0; }
-        if (_page >= _pages) { _page = _pages - 1; }
+        _offset += delta;
+        var max = _lines.size() - _rows;
+        if (_offset > max) { _offset = max; }
+        if (_offset < 0) { _offset = 0; }
     }
 
     function resetScroll() as Void {
-        _page = 0;
+        _offset = 0;
     }
 
     function measure(text as String) as Number {
-        return (_dc as Graphics.Dc).getTextWidthInPixels(text, Graphics.FONT_XTINY);
+        return (_dc as Graphics.Dc).getTextWidthInPixels(text, Graphics.FONT_MEDIUM);
     }
 
     function onUpdate(dc as Graphics.Dc) as Void {
@@ -65,7 +69,7 @@ class JokeView extends WatchUi.View {
             }
         }
 
-        var fontHeight = dc.getFontHeight(Graphics.FONT_XTINY);
+        var fontHeight = dc.getFontHeight(Graphics.FONT_MEDIUM);
         var available = h - top - bottom;
         var rows = (available / fontHeight).toNumber();
         if (rows < 1) { return; }
@@ -110,20 +114,27 @@ class JokeView extends WatchUi.View {
         }
 
         if (!text.equals(_text) || w != _layoutWidth || h != _layoutHeight) {
-            _dc = dc;
-            _lines = JokeText.wrapRows(text, rowWidths, method(:measure));
-            _dc = null;
             _text = text;
             _layoutWidth = w;
             _layoutHeight = h;
-            _page = 0;
+            _offset = 0;
+            _wrapOffset = -1;
         }
-        _pages = JokeText.pageCount(_lines.size(), rows);
-        if (_page >= _pages) { _page = _pages - 1; }
-        var start = _page * rows;
-        for (var row = 0; row < rows && start + row < _lines.size(); row += 1) {
-            dc.drawText(_rowLefts[row], top + row * fontHeight, Graphics.FONT_XTINY,
-                        _lines[start + row], Graphics.TEXT_JUSTIFY_LEFT);
+
+        _rows = rows;
+        if (_wrapOffset != _offset) {
+            _dc = dc;
+            _lines = JokeText.wrapRows(text, JokeText.rotateWidths(rowWidths, _offset),
+                                       method(:measure));
+            _dc = null;
+            _wrapOffset = _offset;
+        }
+        var max = _lines.size() - rows;
+        if (_offset > max) { _offset = max; }
+        if (_offset < 0) { _offset = 0; }
+        for (var row = 0; row < rows && _offset + row < _lines.size(); row += 1) {
+            dc.drawText(_rowLefts[row], top + row * fontHeight, Graphics.FONT_MEDIUM,
+                        _lines[_offset + row], Graphics.TEXT_JUSTIFY_LEFT);
         }
     }
 
