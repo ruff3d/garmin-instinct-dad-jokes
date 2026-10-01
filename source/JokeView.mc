@@ -1,4 +1,5 @@
 import Toybox.Application;
+import Toybox.Attention;
 import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.Math;
@@ -171,8 +172,15 @@ class JokeDelegate extends WatchUi.BehaviorDelegate {
     function onSelect() as Boolean {
         var joke = _state.current();
         var hasPunchline = joke != null && JokeText.split(joke).size() == 2;
+        var wasRevealed = _state.revealed;
         if (_state.confirm(hasPunchline)) {
             (Application.getApp() as DadJokesApp).requestJoke();
+        } else if (!wasRevealed && _state.revealed
+                   && Attention has :playTone && Attention has :ToneProfile) {
+            Attention.playTone({:toneProfile => [
+                new Attention.ToneProfile(2500, 120),
+                new Attention.ToneProfile(3500, 300)
+            ]});
         }
         _view.resetScroll();
         WatchUi.requestUpdate();

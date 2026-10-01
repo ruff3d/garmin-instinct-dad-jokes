@@ -133,10 +133,13 @@ function confirmRevealsThenRequestsNextJoke(logger as Test.Logger) as Boolean {
     Test.assertEqual(state.confirm(true), false);
     Test.assertEqual(state.revealed, true);
     Test.assertEqual(state.confirm(true), true);
+    Test.assertEqual(state.revealed, true);
     Test.assertEqual(state.confirm(true), false);
     state.receive(null);
     Test.assertEqual(state.confirm(true), true);
     state.receive("Next joke.");
+    Test.assertEqual(state.revealed, false);
+    Test.assertEqual(state.confirm(false), true);
     Test.assertEqual(state.revealed, false);
     return true;
 }
