@@ -1,0 +1,4 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="icon.svg"/>
+    <bitmap id="SmileFace" filename="smile.png"/>
+</drawables>

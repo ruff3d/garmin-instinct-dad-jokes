@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Dad Jokes: build Instinct 3 Solar",
+            "type": "shell",
+            "command": "bash",
+            "args": ["scripts/ciq.sh", "build"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "group": {"kind": "build", "isDefault": true},
+            "problemMatcher": []
+        },
+        {
+            "label": "Dad Jokes: compile tests",
+            "type": "shell",
+            "command": "bash",
+            "args": ["scripts/ciq.sh", "test"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Dad Jokes: generic API check",
+            "type": "shell",
+            "command": "bash",
+            "args": ["scripts/ciq.sh", "check"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        }
+    ]
+}
