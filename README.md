@@ -47,6 +47,8 @@ The provider controls joke content and availability. Malformed, empty, failed, a
 
    The device-specific output is `bin/DadJokes.prg`. If the compiler says `Invalid device id specified`, install the Solar device profile in SDK Manager first.
 
+   To assign a new Garmin application ID, run `bash scripts/ciq.sh regenerate-app-id`. This creates a new app identity; installed-app data and update continuity do not carry over.
+
 ## Simulator and tests
 
 ```sh

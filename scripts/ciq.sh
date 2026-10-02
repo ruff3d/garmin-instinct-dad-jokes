@@ -8,6 +8,15 @@ key="${CIQ_DEVELOPER_KEY:-$project_dir/.tools/developer_key.der}"
 device=instinct3solar45mm
 mode="${1:-build}"
 
+if [[ "$mode" == "regenerate-app-id" ]]; then
+    app_id="$(uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]')"
+    tmp_manifest="$(mktemp)"
+    sed -E "s/(<iq:application id=\")[^\"]+/\1$app_id/" manifest.xml > "$tmp_manifest"
+    mv "$tmp_manifest" manifest.xml
+    echo "Regenerated app ID: $app_id"
+    exit 0
+fi
+
 if [[ -z "${JAVA_HOME:-}" ]]; then
     for candidate in "$project_dir"/.tools/jdk-*/Contents/Home; do
         if [[ -x "$candidate/bin/java" ]]; then
@@ -49,7 +58,7 @@ case "$mode" in
         ;;
     build|test|check) ;;
     *)
-        echo "Usage: bash scripts/ciq.sh {build|test|check|simulator|run|run-tests|install}" >&2
+        echo "Usage: bash scripts/ciq.sh {build|test|check|simulator|run|run-tests|install|regenerate-app-id}" >&2
         exit 2
         ;;
 esac
